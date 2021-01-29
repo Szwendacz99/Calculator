@@ -12,6 +12,7 @@
 #include <QApplication>
 #include <QLabel>
 #include <QMainWindow>
+#include <QRegExp>
 
 class MainWindow : public QMainWindow {
 public:
@@ -31,7 +32,8 @@ private:
     void prepareCalculator();
 
 private slots:
-    void handleButton();
+    void writingAction();
+    void equalsAction();
 
 };
 

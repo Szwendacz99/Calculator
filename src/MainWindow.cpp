@@ -12,20 +12,20 @@
 #include <QtDebug>
 
 MainWindow::MainWindow() {
-    std::cout << "Starting MainWindow object" << std::endl;
+    qDebug() << "Starting MainWindow object";
 
     prepareWindow();
     prepareCalculator();
 }
 
 void MainWindow::showWindow() {
-    std::cout << "Showing window" << std::endl;
+    qDebug()<< "Showing window";
     this->show();
 }
 
 MainWindow::~MainWindow() {
     ((Calculator<float>*) calculator)->~Calculator();
-    std::cout << "MainWindow object destroyed!" << std::endl;
+    qDebug() << "MainWindow object destroyed!";
 }
 
 void MainWindow::prepareWindow() {
@@ -62,7 +62,7 @@ void MainWindow::prepareWindow() {
     QPushButton* minus = new QPushButton("-");
     QPushButton* multiply = new QPushButton("*");
     QPushButton* divide = new QPushButton("/");
-    QPushButton* power = new QPushButton("pow");
+    QPushButton* power = new QPushButton("^");
 
     QPushButton* quitButton = new QPushButton("Quit");
     QPushButton* equals = new QPushButton("=");
@@ -109,7 +109,22 @@ void MainWindow::prepareWindow() {
 
     QObject::connect(quitButton,SIGNAL(clicked()), qApp, SLOT(quit()));
 
-    QObject::connect(equals,&QPushButton::pressed, this, &MainWindow::handleButton);
+    QObject::connect(equals,&QPushButton::pressed, this, &MainWindow::equalsAction);
+    QObject::connect(one,&QPushButton::pressed, this, &MainWindow::writingAction);
+    QObject::connect(two,&QPushButton::pressed, this, &MainWindow::writingAction);
+    QObject::connect(three,&QPushButton::pressed, this, &MainWindow::writingAction);
+    QObject::connect(four,&QPushButton::pressed, this, &MainWindow::writingAction);
+    QObject::connect(five,&QPushButton::pressed, this, &MainWindow::writingAction);
+    QObject::connect(six,&QPushButton::pressed, this, &MainWindow::writingAction);
+    QObject::connect(seven,&QPushButton::pressed, this, &MainWindow::writingAction);
+    QObject::connect(eight,&QPushButton::pressed, this, &MainWindow::writingAction);
+    QObject::connect(nine,&QPushButton::pressed, this, &MainWindow::writingAction);
+    QObject::connect(plus,&QPushButton::pressed, this, &MainWindow::writingAction);
+    QObject::connect(minus,&QPushButton::pressed, this, &MainWindow::writingAction);
+    QObject::connect(multiply,&QPushButton::pressed, this, &MainWindow::writingAction);
+    QObject::connect(divide,&QPushButton::pressed, this, &MainWindow::writingAction);
+    QObject::connect(power,&QPushButton::pressed, this, &MainWindow::writingAction);
+
     QWidget* centralWidget = new QWidget();
     centralWidget->setLayout(mainLayout);
     this->setCentralWidget(centralWidget);
@@ -119,7 +134,7 @@ void MainWindow::prepareWindow() {
     mainLayout->addWidget(staticResult);
     mainLayout->addWidget(equals);
     mainLayout->addLayout(numericsColumnsLayout);
-    std::cout << "Finished preparing widgets" << std::endl;
+    qDebug() << "Finished preparing widgets";
 
 }
 
@@ -135,9 +150,32 @@ void MainWindow::prepareCalculator() {
     staticResult->setText(QString(calculator->getResult(math).c_str()));
     liveResult->setText(QString(calculator->getResult(math).c_str()));
     //temporary END
-
 }
 
-void MainWindow::handleButton() {
-    qDebug() << "Clicked button";
+void MainWindow::writingAction() {
+    QPushButton* buttonSender = qobject_cast<QPushButton*>(sender());
+    textInput->setText(textInput->toPlainText() + buttonSender->text()) ;
+    qDebug() << "Clicked writing button";
+
+    std::string result;
+    try {
+        result = calculator->getResult(textInput->toPlainText().toStdString());
+    } catch (const char* error) {
+        result = error;
+    } catch (...) {
+        return;
+    }
+    liveResult->setText(QString(result.c_str()));
+}
+
+void MainWindow::equalsAction() {
+    std::string result;
+    try {
+        result = calculator->getResult(textInput->toPlainText().toStdString());
+    } catch (const char* error) {
+        result = error;
+    } catch (...) {
+        return;
+    }
+    staticResult->setText(QString(result.c_str()));
 }

@@ -9,6 +9,8 @@
 #include <sstream>
 #include <iomanip>
 #include <Calculator.h>
+#include <QtDebug>
+
 
 using namespace std;
 
@@ -50,7 +52,7 @@ number Calculator<number>::calculate(string arg) {
 
 template<typename number>
 Calculator<number>::Calculator(){
-    cout << "Starting Calculator object" << endl;
+    qDebug() << "Starting Calculator object";
 }
 
 template<typename number>
@@ -91,7 +93,7 @@ string Calculator<number>::getResult(string arg) {
 
 template<typename number>
 Calculator<number>::~Calculator() {
-    std::cout << "Calculator object is destroyed!" << std::endl;
+    qDebug()<< "Calculator object is destroyed!";
 }
 
 template<typename number>
