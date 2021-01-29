@@ -8,12 +8,12 @@
 #include <cmath>
 #include <sstream>
 #include <iomanip>
-#include <calculator.h>
+#include <Calculator.h>
 
 using namespace std;
 
-template<typename type>
-type Calculator<type>::calculate(string arg) {
+template<typename number>
+number Calculator<number>::calculate(string arg) {
     if (arg.find("--") != string::npos)
         arg = replaceAll(arg, "--", "");
 
@@ -45,16 +45,16 @@ type Calculator<type>::calculate(string arg) {
                    calculate(arg.substr(arg.find('^') + 1)));
     }
 
-    return (type) stod(arg);
+    return (number) stod(arg);
 }
 
-template<typename type>
-Calculator<type>::Calculator(int precision): precision(precision){
-
+template<typename number>
+Calculator<number>::Calculator(){
+    cout << "Starting Calculator object" << endl;
 }
 
-template<typename type>
-string Calculator<type>::replaceAll(string source, string toReplace, string replacement) {
+template<typename number>
+string Calculator<number>::replaceAll(string source, string toReplace, string replacement) {
     if (toReplace.empty()) {
         throw "Bad arguments to replace !";
     }
@@ -66,8 +66,8 @@ string Calculator<type>::replaceAll(string source, string toReplace, string repl
     return source;
 }
 
-template<typename type>
-size_t Calculator<type>::findClosingBracket(string& source, size_t openingPosition) {
+template<typename number>
+size_t Calculator<number>::findClosingBracket(string& source, size_t openingPosition) {
     int newOpenCount=0;
     for (unsigned long x=openingPosition+1;x<source.size();x++) {
         if (source[x] == ')') {
@@ -81,16 +81,21 @@ size_t Calculator<type>::findClosingBracket(string& source, size_t openingPositi
     return string::npos;
 }
 
-template<typename type>
-string Calculator<type>::getResult(string arg) {
+template<typename number>
+string Calculator<number>::getResult(string arg) {
     arg = replaceAll(arg," ", "");
     std::stringstream stream;
     stream << setprecision(precision) << calculate(arg);
     return stream.str();
 }
 
-template<typename type>
-Calculator<type>::~Calculator() {
+template<typename number>
+Calculator<number>::~Calculator() {
     std::cout << "Calculator object is destroyed!" << std::endl;
+}
+
+template<typename number>
+void Calculator<number>::setPrecision(int precision) {
+    this->precision = precision;
 }
 

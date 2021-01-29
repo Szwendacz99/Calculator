@@ -13,8 +13,8 @@ find_package(Qt5Core REQUIRED)
 find_package(Qt5Widgets REQUIRED)
 find_package(Qt5Quick REQUIRED)
 
-add_executable(calculator src/main.cpp
-               src/calculator.cpp)
+add_executable(calculator src/Main.cpp
+        src/Calculator.cpp src/MainWindow.cpp include/calculator/MainWindow.h)
 
 find_package(Qt5 COMPONENTS Widgets REQUIRED)
 
