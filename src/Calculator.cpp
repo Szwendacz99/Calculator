@@ -68,6 +68,7 @@ string Calculator<number>::replaceAll(string source, string toReplace, string re
     return source;
 }
 
+
 template<typename number>
 size_t Calculator<number>::findClosingBracket(string& source, size_t openingPosition) {
     int newOpenCount=0;

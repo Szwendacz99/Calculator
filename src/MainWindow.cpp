@@ -18,11 +18,6 @@ MainWindow::MainWindow() {
     prepareCalculator();
 }
 
-void MainWindow::showWindow() {
-    qDebug()<< "Showing window";
-    this->show();
-}
-
 MainWindow::~MainWindow() {
     ((Calculator<float>*) calculator)->~Calculator();
     qDebug() << "MainWindow object destroyed!";

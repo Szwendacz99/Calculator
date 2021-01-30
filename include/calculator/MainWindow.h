@@ -14,17 +14,22 @@
 #include <QMainWindow>
 #include <QRegExp>
 
+/**
+ * Class for Main GUI window, everything is being prepared in constructor
+ */
 class MainWindow : public QMainWindow {
 public:
     MainWindow();
-
-    void showWindow();
 
     ~MainWindow() override;
 
 private:
     CalcTypeless* calculator = nullptr;
+
+    // QTextEdit widget for user input
     QTextEdit* textInput = nullptr;
+
+    /// Label for displaying live result
     QLabel* liveResult = nullptr;
     QLabel* staticResult = nullptr;
 
@@ -32,7 +37,15 @@ private:
     void prepareCalculator();
 
 private slots:
+    /**
+     * action for all buttons used directly for writing math expression
+     */
     void writingAction();
+
+    /**
+     * action for showing result in static display label,
+     * used by button "equals"
+     */
     void equalsAction();
 
 };
