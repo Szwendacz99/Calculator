@@ -5,7 +5,6 @@
 #ifndef CALCULATOR_MAINWINDOW_H
 #define CALCULATOR_MAINWINDOW_H
 
-
 #include <Calculator.h>
 #include <QWidget>
 #include <QTextEdit>
@@ -13,6 +12,14 @@
 #include <QLabel>
 #include <QMainWindow>
 #include <QRegExp>
+
+
+/**
+ * CSS styles for selected and not selected buttons for
+ * changing type of number
+ */
+#define NOT_SELECTED "font-weight:normal; color:;"
+#define SELECTED "font-weight:bold; color:green;"
 
 /**
  * Class for Main GUI window, everything is being prepared in constructor
@@ -33,8 +40,13 @@ private:
     QLabel* liveResult = nullptr;
     QLabel* staticResult = nullptr;
 
+    QPushButton* buttonInt = new QPushButton("Integer");
+    QPushButton* buttonLong = new QPushButton("Long");
+    QPushButton* buttonFloat = new QPushButton("Float");
+    QPushButton* buttonDouble = new QPushButton("Double");
+
     /**
-     * Sets up whole interface layouts
+     * Set up whole interface layouts
      */
     void prepareWindow();
 
@@ -45,7 +57,7 @@ private:
     void prepareCalculator();
 
     /**
-     * Triggers calculation and puts result (or error info) text to
+     * Trigger calculation and put result (or error info) text to
      * the given widget
      * @param widget QLabel widget in which text will be changed
      */
@@ -64,9 +76,15 @@ private slots:
     void equalsAction();
 
     /**
-     * deletes last char in input text field
+     * delete last char in input text field
      */
     void backspaceAction();
+
+    /**
+     * reinitialize calculator object to selected number type
+     * after that refresh calculation and display result
+     */
+    void changeNumberType();
 
 };
 

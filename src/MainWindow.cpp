@@ -51,12 +51,6 @@ void MainWindow::prepareWindow() {
     QPushButton* eight = new QPushButton("8");
     QPushButton* nine = new QPushButton("9");
 
-    QPushButton* buttonInt = new QPushButton("Integer");
-    QPushButton* buttonLong = new QPushButton("Long");
-    QPushButton* buttonFloat = new QPushButton("Float");
-    QPushButton* buttonDouble = new QPushButton("Double");
-
-
     QPushButton* plus = new QPushButton("+");
     QPushButton* minus = new QPushButton("-");
     QPushButton* multiply = new QPushButton("*");
@@ -137,7 +131,16 @@ void MainWindow::prepareWindow() {
     QObject::connect(multiply,&QPushButton::pressed, this, &MainWindow::writingAction);
     QObject::connect(divide,&QPushButton::pressed, this, &MainWindow::writingAction);
     QObject::connect(power,&QPushButton::pressed, this, &MainWindow::writingAction);
+    QObject::connect(openingBracket,&QPushButton::pressed, this, &MainWindow::writingAction);
+    QObject::connect(closingBracket,&QPushButton::pressed, this, &MainWindow::writingAction);
+    QObject::connect(sinus,&QPushButton::pressed, this, &MainWindow::writingAction);
+    QObject::connect(cosinus,&QPushButton::pressed, this, &MainWindow::writingAction);
+    QObject::connect(tangens,&QPushButton::pressed, this, &MainWindow::writingAction);
 
+    QObject::connect(buttonInt,&QPushButton::pressed, this, &MainWindow::changeNumberType);
+    QObject::connect(buttonLong,&QPushButton::pressed, this, &MainWindow::changeNumberType);
+    QObject::connect(buttonFloat,&QPushButton::pressed, this, &MainWindow::changeNumberType);
+    QObject::connect(buttonDouble,&QPushButton::pressed, this, &MainWindow::changeNumberType);
 
     QObject::connect(backspaceButton,&QPushButton::pressed, this, &MainWindow::backspaceAction);
     QObject::connect(equals,&QPushButton::pressed, this, &MainWindow::equalsAction);
@@ -154,6 +157,10 @@ void MainWindow::prepareWindow() {
     equalsPanel->addWidget(backspaceButton);
     mainLayout->addLayout(equalsPanel);
     mainLayout->addLayout(numericsColumnsLayout);
+
+    /// default setup
+    buttonDouble->setStyleSheet(SELECTED);
+
     qDebug() << "Finished preparing widgets";
 
 }
@@ -163,7 +170,7 @@ void MainWindow::prepareWindow() {
 std::string math = " 254*55646/2+(55+66*77)+2^32";
 
 void MainWindow::prepareCalculator() {
-    calculator = new Calculator<float>();
+    calculator = new Calculator<double>();
 
     //temporary START
     textInput->setText(math.c_str());
@@ -202,4 +209,34 @@ void MainWindow::setResultText(QLabel* widget) {
         result = "";
     }
     widget->setText(QString(result.c_str()));
+}
+
+void MainWindow::changeNumberType() {
+    const std::string type = qobject_cast<QPushButton*>(sender())->text().toStdString();
+    free(calculator);
+
+    buttonInt->setStyleSheet(NOT_SELECTED);
+    buttonLong->setStyleSheet(NOT_SELECTED);
+    buttonFloat->setStyleSheet(NOT_SELECTED);
+    buttonDouble->setStyleSheet(NOT_SELECTED);
+
+    if (type == "Integer") {
+        calculator = new Calculator<int>;
+        buttonInt->setStyleSheet(SELECTED);
+    }else if (type =="Long") {
+        calculator = new Calculator<long>;
+        buttonLong->setStyleSheet(SELECTED);
+    }else if (type =="Float") {
+        calculator = new Calculator<float>;
+        buttonFloat->setStyleSheet(SELECTED);
+    }else if (type =="Double") {
+        calculator = new Calculator<double>;
+        buttonDouble->setStyleSheet(SELECTED);
+    } else{
+        throw "No such type of number!";
+    }
+
+    setResultText(liveResult);
+    setResultText(staticResult);
+
 }

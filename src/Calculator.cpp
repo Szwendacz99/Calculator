@@ -52,7 +52,8 @@ number Calculator<number>::calculate(string arg) {
 
 template<typename number>
 Calculator<number>::Calculator(){
-    qDebug() << "Starting Calculator object";
+    qDebug() << "Starting Calculator object, type of number: " << typeid(number).name();
+
 }
 
 template<typename number>

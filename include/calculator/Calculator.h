@@ -41,7 +41,7 @@ public:
     std::string getResult(std::string arg) override;
 
     /**
-     * Sets precision for calculator object, remember to trigger solving to see
+     * Set precision for calculator object, remember to trigger solving to see
      * result on gui
      * @tparam number
      * @param precision precision of calculations and displayed result. It applies only to float/double type of calculator
@@ -52,7 +52,7 @@ public:
 private:
     int precision = DEFAULT_PRECISION;
     /**
-     * Recursively calculates result of given mathematical expression
+     * Recursively calculate result of given mathematical expression
      * If solving fails, method throws char* exceptions, containing cause of error
      * which can be displayed instead of proper result on GUI
      * @tparam number type of variable used in calculations
@@ -62,7 +62,7 @@ private:
     number calculate(std::string arg);
 
     /**
-     * Simply replaces all occurrences of phrase to a new one.
+     * Simply replace all occurrences of phrase to a new one.
      * @tparam number
      * @param source string in which replacing will be done
      * @param toReplace phrase to be found and replaced
