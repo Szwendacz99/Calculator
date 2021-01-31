@@ -6,6 +6,8 @@
 #define CALCULATOR_CALCULATOR_H
 
 #include <string>
+#include <vector>
+#include <QPushButton>
 
 #define DEFAULT_PRECISION 6
 
@@ -20,7 +22,6 @@ public:
 };
 
 /**
- *
  * @tparam number this typename param specifies type of variable to which
  * numbers from string (through double first - string=>double=>properType) will be cast on each operation
  */
@@ -51,7 +52,6 @@ public:
 private:
     int precision = DEFAULT_PRECISION;
     /**
-     *
      * Recursively calculates result of given mathematical expression
      * If solving fails, method throws char* exceptions, containing cause of error
      * which can be displayed instead of proper result on GUI

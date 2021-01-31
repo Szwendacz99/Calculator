@@ -29,12 +29,27 @@ private:
     // QTextEdit widget for user input
     QTextEdit* textInput = nullptr;
 
-    /// Label for displaying live result
+    /// Label for displaying result while user writing
     QLabel* liveResult = nullptr;
     QLabel* staticResult = nullptr;
 
+    /**
+     * Sets up whole interface layouts
+     */
     void prepareWindow();
+
+    /**
+     * initialize Calculator object with upcasting to
+     * CalcTypeless class
+     */
     void prepareCalculator();
+
+    /**
+     * Triggers calculation and puts result (or error info) text to
+     * the given widget
+     * @param widget QLabel widget in which text will be changed
+     */
+    void setResultText(QLabel* widget);
 
 private slots:
     /**
@@ -47,6 +62,11 @@ private slots:
      * used by button "equals"
      */
     void equalsAction();
+
+    /**
+     * deletes last char in input text field
+     */
+    void backspaceAction();
 
 };
 

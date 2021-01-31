@@ -23,18 +23,22 @@ MainWindow::~MainWindow() {
     qDebug() << "MainWindow object destroyed!";
 }
 
+#define BACKSPACE_SYMBOL "⌫"
+
 void MainWindow::prepareWindow() {
 
     textInput = new QTextEdit;
+    textInput->setStyleSheet("font-size:20px;font-family: Arial, Helvetica, sans-serif;");
 
     std::cout << "Preparing widgets" << std::endl;
     QVBoxLayout* mainLayout = new QVBoxLayout;
     QHBoxLayout* numericsColumnsLayout = new QHBoxLayout;
+    QHBoxLayout* equalsPanel = new QHBoxLayout;
     QVBoxLayout* column1Layout = new QVBoxLayout;
     QVBoxLayout* column2Layout = new QVBoxLayout;
     QVBoxLayout* column3Layout = new QVBoxLayout;
     QVBoxLayout* column4Layout = new QVBoxLayout;
-    QVBoxLayout* numberTypePanel = new QVBoxLayout;
+    QVBoxLayout* column5Layout = new QVBoxLayout;
 
     QPushButton* zero = new QPushButton("0");
     QPushButton* one = new QPushButton("1");
@@ -59,8 +63,16 @@ void MainWindow::prepareWindow() {
     QPushButton* divide = new QPushButton("/");
     QPushButton* power = new QPushButton("^");
 
+    QPushButton* openingBracket = new QPushButton("(");
+    QPushButton* closingBracket = new QPushButton(")");
+    QPushButton* sinus = new QPushButton("sin()");
+    QPushButton* cosinus = new QPushButton("cos()");
+    QPushButton* tangens = new QPushButton("tan()");
+
     QPushButton* quitButton = new QPushButton("Quit");
     QPushButton* equals = new QPushButton("=");
+    QPushButton* backspaceButton = new QPushButton(BACKSPACE_SYMBOL);
+    backspaceButton->setStyleSheet("font-size:10px;");
 
     liveResult = new QLabel("0");
     staticResult = new QLabel("0");
@@ -74,37 +86,43 @@ void MainWindow::prepareWindow() {
     column1Layout->addWidget(one);
     column1Layout->addWidget(four);
     column1Layout->addWidget(seven);
-    column1Layout->addWidget(quitButton);
+    column1Layout->addWidget(zero);
+    column1Layout->addWidget(sinus);
 
     column2Layout->addWidget(two);
     column2Layout->addWidget(five);
     column2Layout->addWidget(eight);
-    column2Layout->addWidget(zero);
+    column2Layout->addWidget(openingBracket);
+    column2Layout->addWidget(cosinus);
 
     column3Layout->addWidget(three);
     column3Layout->addWidget(six);
     column3Layout->addWidget(nine);
-    column3Layout->addWidget(power);
+    column3Layout->addWidget(closingBracket);
+    column3Layout->addWidget(tangens);
 
     column4Layout->addWidget(plus);
     column4Layout->addWidget(minus);
     column4Layout->addWidget(multiply);
     column4Layout->addWidget(divide);
+    column4Layout->addWidget(power);
 
-    numberTypePanel->addWidget(buttonInt);
-    numberTypePanel->addWidget(buttonLong);
-    numberTypePanel->addWidget(buttonFloat);
-    numberTypePanel->addWidget(buttonDouble);
+    column5Layout->addWidget(buttonInt);
+    column5Layout->addWidget(buttonLong);
+    column5Layout->addWidget(buttonFloat);
+    column5Layout->addWidget(buttonDouble);
+    column5Layout->addWidget(quitButton);
 
     numericsColumnsLayout->addItem(column1Layout);
     numericsColumnsLayout->addItem(column2Layout);
     numericsColumnsLayout->addItem(column3Layout);
     numericsColumnsLayout->addItem(column4Layout);
-    numericsColumnsLayout->addItem(numberTypePanel);
+    numericsColumnsLayout->addItem(column5Layout);
 
     QObject::connect(quitButton,SIGNAL(clicked()), qApp, SLOT(quit()));
 
-    QObject::connect(equals,&QPushButton::pressed, this, &MainWindow::equalsAction);
+
+    QObject::connect(zero,&QPushButton::pressed, this, &MainWindow::writingAction);
     QObject::connect(one,&QPushButton::pressed, this, &MainWindow::writingAction);
     QObject::connect(two,&QPushButton::pressed, this, &MainWindow::writingAction);
     QObject::connect(three,&QPushButton::pressed, this, &MainWindow::writingAction);
@@ -120,6 +138,10 @@ void MainWindow::prepareWindow() {
     QObject::connect(divide,&QPushButton::pressed, this, &MainWindow::writingAction);
     QObject::connect(power,&QPushButton::pressed, this, &MainWindow::writingAction);
 
+
+    QObject::connect(backspaceButton,&QPushButton::pressed, this, &MainWindow::backspaceAction);
+    QObject::connect(equals,&QPushButton::pressed, this, &MainWindow::equalsAction);
+
     QWidget* centralWidget = new QWidget();
     centralWidget->setLayout(mainLayout);
     this->setCentralWidget(centralWidget);
@@ -127,7 +149,10 @@ void MainWindow::prepareWindow() {
     mainLayout->addWidget(textInput);
     mainLayout->addWidget(liveResult);
     mainLayout->addWidget(staticResult);
-    mainLayout->addWidget(equals);
+
+    equalsPanel->addWidget(equals);
+    equalsPanel->addWidget(backspaceButton);
+    mainLayout->addLayout(equalsPanel);
     mainLayout->addLayout(numericsColumnsLayout);
     qDebug() << "Finished preparing widgets";
 
@@ -151,26 +176,30 @@ void MainWindow::writingAction() {
     QPushButton* buttonSender = qobject_cast<QPushButton*>(sender());
     textInput->setText(textInput->toPlainText() + buttonSender->text()) ;
     qDebug() << "Clicked writing button";
-
-    std::string result;
-    try {
-        result = calculator->getResult(textInput->toPlainText().toStdString());
-    } catch (const char* error) {
-        result = error;
-    } catch (...) {
-        return;
-    }
-    liveResult->setText(QString(result.c_str()));
+    setResultText(liveResult);
+    textInput->setFocus();
 }
 
 void MainWindow::equalsAction() {
+    setResultText(staticResult);
+}
+
+void MainWindow::backspaceAction() {
+    size_t size = textInput->toPlainText().size();
+    if( size == 0)
+        return;
+    textInput->setText(textInput->toPlainText().remove(size-1,1));
+    setResultText(liveResult);
+}
+
+void MainWindow::setResultText(QLabel* widget) {
     std::string result;
     try {
         result = calculator->getResult(textInput->toPlainText().toStdString());
     } catch (const char* error) {
         result = error;
     } catch (...) {
-        return;
+        result = "";
     }
-    staticResult->setText(QString(result.c_str()));
+    widget->setText(QString(result.c_str()));
 }
