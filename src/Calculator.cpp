@@ -20,7 +20,34 @@ number Calculator<number>::calculate(string arg) {
         arg = replaceAll(arg, "--", "");
 
     cout << "##### " << arg << endl;
-    if (arg.find('(') != string::npos) {
+    if (arg.find("sin(") != string::npos) {
+        size_t positionStart = arg.find("sin(");
+        size_t positionEnd = findClosingBracket(arg, positionStart+3);
+        if (positionEnd == string::npos) {
+            throw "missing closing brackets!";
+        }
+        return calculate(replaceAll(arg, arg.substr(positionStart, positionEnd - positionStart + 1),
+                                    to_string(sin(calculate(arg.substr(positionStart+3 ,
+                                                                       positionEnd - positionStart -2))))));
+    }else if (arg.find("cos(") != string::npos) {
+        size_t positionStart = arg.find("cos(");
+        size_t positionEnd = findClosingBracket(arg, positionStart+3);
+        if (positionEnd == string::npos) {
+            throw "missing closing brackets!";
+        }
+        return calculate(replaceAll(arg, arg.substr(positionStart, positionEnd - positionStart + 1),
+                                    to_string(cos(calculate(arg.substr(positionStart+3 ,
+                                                                       positionEnd - positionStart -2))))));
+    }else if (arg.find("tan(") != string::npos) {
+        size_t positionStart = arg.find("tan(");
+        size_t positionEnd = findClosingBracket(arg, positionStart+3);
+        if (positionEnd == string::npos) {
+            throw "missing closing brackets!";
+        }
+        return calculate(replaceAll(arg, arg.substr(positionStart, positionEnd - positionStart + 1),
+                                    to_string(tan(calculate(arg.substr(positionStart+3 ,
+                                                                   positionEnd - positionStart -2))))));
+    }else if (arg.find('(') != string::npos) {
         size_t positionStart = arg.find('(');
         size_t positionEnd = findClosingBracket(arg, positionStart);
         if (positionEnd == string::npos) {
@@ -33,7 +60,9 @@ number Calculator<number>::calculate(string arg) {
     } else if (arg.find('+') != string::npos) {
         return calculate(arg.substr(0, arg.find('+'))) +
                calculate(arg.substr(arg.find('+') + 1));
-    } else if (arg.find('-') != string::npos && arg.find('-') != 0 && arg[arg.find('-') - 1] != '^') {
+    } else if (arg.find('-') != string::npos && arg.find('-') != 0 && arg[arg.find('-') - 1] != '^'
+                                                                      && arg[arg.find('-') - 1] != '*'
+                                                                         && arg[arg.find('-') - 1] != '/') {
         return calculate(arg.substr(0, arg.find('-'))) -
                calculate(arg.substr(arg.find('-') + 1));
     } else if (arg.find('*') != string::npos) {
@@ -88,6 +117,10 @@ size_t Calculator<number>::findClosingBracket(string& source, size_t openingPosi
 template<typename number>
 string Calculator<number>::getResult(string arg) {
     arg = replaceAll(arg," ", "");
+
+    // Qt framework messes up locales and because of that std::stod function works with
+    // commas instead of dots, then this replacement is needed.
+    arg = replaceAll(arg,".", ",");
     std::stringstream stream;
     stream << setprecision(precision) << calculate(arg);
     return stream.str();

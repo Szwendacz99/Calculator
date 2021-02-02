@@ -86,6 +86,8 @@ private slots:
      */
     void changeNumberType();
 
+    void clearAction();
+
 };
 
 

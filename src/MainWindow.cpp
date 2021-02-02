@@ -34,6 +34,7 @@ void MainWindow::prepareWindow() {
     QVBoxLayout* mainLayout = new QVBoxLayout;
     QHBoxLayout* numericsColumnsLayout = new QHBoxLayout;
     QHBoxLayout* equalsPanel = new QHBoxLayout;
+    QHBoxLayout* deletingPanel = new QHBoxLayout;
     QVBoxLayout* column1Layout = new QVBoxLayout;
     QVBoxLayout* column2Layout = new QVBoxLayout;
     QVBoxLayout* column3Layout = new QVBoxLayout;
@@ -67,6 +68,8 @@ void MainWindow::prepareWindow() {
     QPushButton* equals = new QPushButton("=");
     QPushButton* backspaceButton = new QPushButton(BACKSPACE_SYMBOL);
     backspaceButton->setStyleSheet("font-size:10px;");
+    QPushButton* clearButton = new QPushButton("Clear");
+
 
     liveResult = new QLabel("0");
     staticResult = new QLabel("0");
@@ -116,34 +119,35 @@ void MainWindow::prepareWindow() {
     QObject::connect(quitButton,SIGNAL(clicked()), qApp, SLOT(quit()));
 
 
-    QObject::connect(zero,&QPushButton::pressed, this, &MainWindow::writingAction);
-    QObject::connect(one,&QPushButton::pressed, this, &MainWindow::writingAction);
-    QObject::connect(two,&QPushButton::pressed, this, &MainWindow::writingAction);
-    QObject::connect(three,&QPushButton::pressed, this, &MainWindow::writingAction);
-    QObject::connect(four,&QPushButton::pressed, this, &MainWindow::writingAction);
-    QObject::connect(five,&QPushButton::pressed, this, &MainWindow::writingAction);
-    QObject::connect(six,&QPushButton::pressed, this, &MainWindow::writingAction);
-    QObject::connect(seven,&QPushButton::pressed, this, &MainWindow::writingAction);
-    QObject::connect(eight,&QPushButton::pressed, this, &MainWindow::writingAction);
-    QObject::connect(nine,&QPushButton::pressed, this, &MainWindow::writingAction);
-    QObject::connect(plus,&QPushButton::pressed, this, &MainWindow::writingAction);
-    QObject::connect(minus,&QPushButton::pressed, this, &MainWindow::writingAction);
-    QObject::connect(multiply,&QPushButton::pressed, this, &MainWindow::writingAction);
-    QObject::connect(divide,&QPushButton::pressed, this, &MainWindow::writingAction);
-    QObject::connect(power,&QPushButton::pressed, this, &MainWindow::writingAction);
-    QObject::connect(openingBracket,&QPushButton::pressed, this, &MainWindow::writingAction);
-    QObject::connect(closingBracket,&QPushButton::pressed, this, &MainWindow::writingAction);
-    QObject::connect(sinus,&QPushButton::pressed, this, &MainWindow::writingAction);
-    QObject::connect(cosinus,&QPushButton::pressed, this, &MainWindow::writingAction);
-    QObject::connect(tangens,&QPushButton::pressed, this, &MainWindow::writingAction);
+    QObject::connect(zero,&QPushButton::released, this, &MainWindow::writingAction);
+    QObject::connect(one,&QPushButton::released, this, &MainWindow::writingAction);
+    QObject::connect(two,&QPushButton::released, this, &MainWindow::writingAction);
+    QObject::connect(three,&QPushButton::released, this, &MainWindow::writingAction);
+    QObject::connect(four,&QPushButton::released, this, &MainWindow::writingAction);
+    QObject::connect(five,&QPushButton::released, this, &MainWindow::writingAction);
+    QObject::connect(six,&QPushButton::released, this, &MainWindow::writingAction);
+    QObject::connect(seven,&QPushButton::released, this, &MainWindow::writingAction);
+    QObject::connect(eight,&QPushButton::released, this, &MainWindow::writingAction);
+    QObject::connect(nine,&QPushButton::released, this, &MainWindow::writingAction);
+    QObject::connect(plus,&QPushButton::released, this, &MainWindow::writingAction);
+    QObject::connect(minus,&QPushButton::released, this, &MainWindow::writingAction);
+    QObject::connect(multiply,&QPushButton::released, this, &MainWindow::writingAction);
+    QObject::connect(divide,&QPushButton::released, this, &MainWindow::writingAction);
+    QObject::connect(power,&QPushButton::released, this, &MainWindow::writingAction);
+    QObject::connect(openingBracket,&QPushButton::released, this, &MainWindow::writingAction);
+    QObject::connect(closingBracket,&QPushButton::released, this, &MainWindow::writingAction);
+    QObject::connect(sinus,&QPushButton::released, this, &MainWindow::writingAction);
+    QObject::connect(cosinus,&QPushButton::released, this, &MainWindow::writingAction);
+    QObject::connect(tangens,&QPushButton::released, this, &MainWindow::writingAction);
 
-    QObject::connect(buttonInt,&QPushButton::pressed, this, &MainWindow::changeNumberType);
-    QObject::connect(buttonLong,&QPushButton::pressed, this, &MainWindow::changeNumberType);
-    QObject::connect(buttonFloat,&QPushButton::pressed, this, &MainWindow::changeNumberType);
-    QObject::connect(buttonDouble,&QPushButton::pressed, this, &MainWindow::changeNumberType);
+    QObject::connect(buttonInt,&QPushButton::released, this, &MainWindow::changeNumberType);
+    QObject::connect(buttonLong,&QPushButton::released, this, &MainWindow::changeNumberType);
+    QObject::connect(buttonFloat,&QPushButton::released, this, &MainWindow::changeNumberType);
+    QObject::connect(buttonDouble,&QPushButton::released, this, &MainWindow::changeNumberType);
 
-    QObject::connect(backspaceButton,&QPushButton::pressed, this, &MainWindow::backspaceAction);
-    QObject::connect(equals,&QPushButton::pressed, this, &MainWindow::equalsAction);
+    QObject::connect(backspaceButton,&QPushButton::released, this, &MainWindow::backspaceAction);
+    QObject::connect(equals,&QPushButton::released, this, &MainWindow::equalsAction);
+    QObject::connect(clearButton,&QPushButton::released, this, &MainWindow::clearAction);
 
     QWidget* centralWidget = new QWidget();
     centralWidget->setLayout(mainLayout);
@@ -154,7 +158,9 @@ void MainWindow::prepareWindow() {
     mainLayout->addWidget(staticResult);
 
     equalsPanel->addWidget(equals);
-    equalsPanel->addWidget(backspaceButton);
+    deletingPanel->addWidget(backspaceButton);
+    deletingPanel->addWidget(clearButton);
+    equalsPanel->addLayout(deletingPanel);
     mainLayout->addLayout(equalsPanel);
     mainLayout->addLayout(numericsColumnsLayout);
 
@@ -167,15 +173,15 @@ void MainWindow::prepareWindow() {
 
 
 //string math = "2^(((22*5/2)+4*(2+4)+2*((2*(5/4)))+(2.5-4.6^2.6^(-0.2)) *(2^(24-6/2^5)+ 5^2^2+ 15/5*20*50/50+345/2 + 2 + 6/3 * 4 +6 + 5*2))/100000)";
-std::string math = " 254*55646/2+(55+66*77)+2^32";
+std::string math = "254*55646/2+(55+66*77)+2^cos(tan(-3.5))";
 
 void MainWindow::prepareCalculator() {
     calculator = new Calculator<double>();
 
     //temporary START
     textInput->setText(math.c_str());
-    staticResult->setText(QString(calculator->getResult(math).c_str()));
-    liveResult->setText(QString(calculator->getResult(math).c_str()));
+    setResultText(staticResult);
+    setResultText(liveResult);
     //temporary END
 }
 
@@ -213,7 +219,7 @@ void MainWindow::setResultText(QLabel* widget) {
 
 void MainWindow::changeNumberType() {
     const std::string type = qobject_cast<QPushButton*>(sender())->text().toStdString();
-    free(calculator);
+    delete (Calculator<double>*)calculator;
 
     buttonInt->setStyleSheet(NOT_SELECTED);
     buttonLong->setStyleSheet(NOT_SELECTED);
@@ -238,5 +244,12 @@ void MainWindow::changeNumberType() {
 
     setResultText(liveResult);
     setResultText(staticResult);
+    textInput->setFocus();
+}
 
+void MainWindow::clearAction() {
+    textInput->setText("");
+    liveResult->setText("");
+    staticResult->setText("");
+    textInput->setFocus();
 }
