@@ -12,6 +12,7 @@
 #include <QLabel>
 #include <QMainWindow>
 #include <QRegExp>
+#include <QSlider>
 
 
 /**
@@ -44,6 +45,8 @@ private:
     QPushButton* buttonLong = new QPushButton("Long");
     QPushButton* buttonFloat = new QPushButton("Float");
     QPushButton* buttonDouble = new QPushButton("Double");
+    QSlider* precisionSlider = new QSlider(Qt::Vertical);
+    QLabel* precisionLabel = new QLabel;
 
     /**
      * Set up whole interface layouts
@@ -86,7 +89,18 @@ private slots:
      */
     void changeNumberType();
 
+    /**
+     * clear both static and live result, and input field
+     */
     void clearAction();
+
+    /**
+     * action on user manually insert text to input field,
+     * trigger printing live result
+     */
+    void newInputAction();
+
+    void setPrecisionAction();
 
 };
 

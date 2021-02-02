@@ -15,10 +15,12 @@
 /**
  * Abstract class for easy use with upcasting of Calculator with different
  * types of variable.
+ * Should contain only necessary virtual functions.
  */
 class CalcTypeless {
 public:
     virtual std::string getResult(std::string arg) = 0;
+    virtual void setPrecision(int precision) = 0;
 };
 
 /**

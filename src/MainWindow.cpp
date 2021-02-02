@@ -30,6 +30,11 @@ void MainWindow::prepareWindow() {
     textInput = new QTextEdit;
     textInput->setStyleSheet("font-size:20px;font-family: Arial, Helvetica, sans-serif;");
 
+    precisionSlider->setRange(0,308);
+    precisionSlider->setValue(20);
+    precisionSlider->setStyleSheet("padding-left:50%;");
+    
+
     std::cout << "Preparing widgets" << std::endl;
     QVBoxLayout* mainLayout = new QVBoxLayout;
     QHBoxLayout* numericsColumnsLayout = new QHBoxLayout;
@@ -40,6 +45,7 @@ void MainWindow::prepareWindow() {
     QVBoxLayout* column3Layout = new QVBoxLayout;
     QVBoxLayout* column4Layout = new QVBoxLayout;
     QVBoxLayout* column5Layout = new QVBoxLayout;
+    QVBoxLayout* column6Layout = new QVBoxLayout;
 
     QPushButton* zero = new QPushButton("0");
     QPushButton* one = new QPushButton("1");
@@ -51,6 +57,7 @@ void MainWindow::prepareWindow() {
     QPushButton* seven = new QPushButton("7");
     QPushButton* eight = new QPushButton("8");
     QPushButton* nine = new QPushButton("9");
+    QPushButton* dot = new QPushButton(".");
 
     QPushButton* plus = new QPushButton("+");
     QPushButton* minus = new QPushButton("-");
@@ -84,40 +91,49 @@ void MainWindow::prepareWindow() {
     column1Layout->addWidget(four);
     column1Layout->addWidget(seven);
     column1Layout->addWidget(zero);
-    column1Layout->addWidget(sinus);
+    column1Layout->addWidget(openingBracket);
 
     column2Layout->addWidget(two);
     column2Layout->addWidget(five);
     column2Layout->addWidget(eight);
-    column2Layout->addWidget(openingBracket);
-    column2Layout->addWidget(cosinus);
+    column2Layout->addWidget(dot);
+    column2Layout->addWidget(closingBracket);
 
     column3Layout->addWidget(three);
     column3Layout->addWidget(six);
     column3Layout->addWidget(nine);
-    column3Layout->addWidget(closingBracket);
-    column3Layout->addWidget(tangens);
+    column3Layout->addWidget(power);
+    column3Layout->addWidget(sinus);
 
     column4Layout->addWidget(plus);
     column4Layout->addWidget(minus);
     column4Layout->addWidget(multiply);
     column4Layout->addWidget(divide);
-    column4Layout->addWidget(power);
+    column4Layout->addWidget(cosinus);
 
     column5Layout->addWidget(buttonInt);
     column5Layout->addWidget(buttonLong);
     column5Layout->addWidget(buttonFloat);
     column5Layout->addWidget(buttonDouble);
-    column5Layout->addWidget(quitButton);
+    column5Layout->addWidget(tangens);
+
+
+    QVBoxLayout* sliderHolder = new QVBoxLayout;
+    sliderHolder->setAlignment(Qt::AlignCenter);
+    sliderHolder->addWidget(precisionSlider);
+//    sliderHolder.
+    column6Layout->addItem(sliderHolder);
+    column6Layout->addWidget(precisionLabel);
+    column6Layout->addWidget(quitButton);
 
     numericsColumnsLayout->addItem(column1Layout);
     numericsColumnsLayout->addItem(column2Layout);
     numericsColumnsLayout->addItem(column3Layout);
     numericsColumnsLayout->addItem(column4Layout);
     numericsColumnsLayout->addItem(column5Layout);
+    numericsColumnsLayout->addItem(column6Layout);
 
-    QObject::connect(quitButton,SIGNAL(clicked()), qApp, SLOT(quit()));
-
+    QObject::connect(quitButton,&QPushButton::clicked, qApp, &QApplication::quit);
 
     QObject::connect(zero,&QPushButton::released, this, &MainWindow::writingAction);
     QObject::connect(one,&QPushButton::released, this, &MainWindow::writingAction);
@@ -139,6 +155,7 @@ void MainWindow::prepareWindow() {
     QObject::connect(sinus,&QPushButton::released, this, &MainWindow::writingAction);
     QObject::connect(cosinus,&QPushButton::released, this, &MainWindow::writingAction);
     QObject::connect(tangens,&QPushButton::released, this, &MainWindow::writingAction);
+    QObject::connect(dot,&QPushButton::released, this, &MainWindow::writingAction);
 
     QObject::connect(buttonInt,&QPushButton::released, this, &MainWindow::changeNumberType);
     QObject::connect(buttonLong,&QPushButton::released, this, &MainWindow::changeNumberType);
@@ -149,9 +166,16 @@ void MainWindow::prepareWindow() {
     QObject::connect(equals,&QPushButton::released, this, &MainWindow::equalsAction);
     QObject::connect(clearButton,&QPushButton::released, this, &MainWindow::clearAction);
 
+    QObject::connect(textInput,&QTextEdit::textChanged, this, &MainWindow::newInputAction);
+
+    QObject::connect(precisionSlider,&QAbstractSlider::valueChanged, this, &MainWindow::setPrecisionAction);
+
+
     QWidget* centralWidget = new QWidget();
     centralWidget->setLayout(mainLayout);
     this->setCentralWidget(centralWidget);
+
+
 
     mainLayout->addWidget(textInput);
     mainLayout->addWidget(liveResult);
@@ -171,8 +195,6 @@ void MainWindow::prepareWindow() {
 
 }
 
-
-//string math = "2^(((22*5/2)+4*(2+4)+2*((2*(5/4)))+(2.5-4.6^2.6^(-0.2)) *(2^(24-6/2^5)+ 5^2^2+ 15/5*20*50/50+345/2 + 2 + 6/3 * 4 +6 + 5*2))/100000)";
 std::string math = "254*55646/2+(55+66*77)+2^cos(tan(-3.5))";
 
 void MainWindow::prepareCalculator() {
@@ -183,6 +205,8 @@ void MainWindow::prepareCalculator() {
     setResultText(staticResult);
     setResultText(liveResult);
     //temporary END
+
+    setPrecisionAction();
 }
 
 void MainWindow::writingAction() {
@@ -252,4 +276,16 @@ void MainWindow::clearAction() {
     liveResult->setText("");
     staticResult->setText("");
     textInput->setFocus();
+}
+
+void MainWindow::newInputAction() {
+    setResultText(liveResult);
+}
+
+void MainWindow::setPrecisionAction() {
+    calculator->setPrecision(precisionSlider->value());
+    char precisionText[15];
+    snprintf(precisionText,15,"Precision: %d", precisionSlider->value());
+    precisionLabel->setText(precisionText);
+    setResultText(liveResult);
 }

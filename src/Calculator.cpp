@@ -68,9 +68,11 @@ number Calculator<number>::calculate(string arg) {
     } else if (arg.find('*') != string::npos) {
         return calculate(arg.substr(0, arg.find('*'))) *
                calculate(arg.substr(arg.find('*') + 1));
-    } else if (arg.find('/') != string::npos) {
-        return calculate(arg.substr(0, arg.find('/'))) /
-               calculate(arg.substr(arg.find('/') + 1));
+    } else if (arg.find_last_of('/') != string::npos) {
+        // because of bug with phrases like 1/2/2/2/2 where it splits in wrong order
+        // when dividing, there is need of using find_last_of instead of find
+        return calculate(arg.substr(0, arg.find_last_of('/'))) /
+               calculate(arg.substr(arg.find_last_of('/') + 1));
     } else if (arg.find('^') != string::npos) {
         return pow(calculate(arg.substr(0, arg.find('^'))) ,
                    calculate(arg.substr(arg.find('^') + 1)));
