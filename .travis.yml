@@ -7,6 +7,10 @@ install:
   - sudo apt-get update -qq
   - sudo apt-get install -qq qt5-default
   - sudo apt-get install -qq cmake make
+  - sudo apt-get install -qq build-essential
+  - sudo apt-get install -qq libgtest-dev
+  - sudo apt-get install -qq qtdeclarative5-dev
+  - sudo apt-get install -qq qtbase5-dev
 
 compiler:
   - clang
