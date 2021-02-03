@@ -1,6 +1,12 @@
 image: gcc
 language: c++
 
+install: make get-deps
+
+compiler:
+  - clang
+  - gcc
+
 build:
   stage: build
   # instead of calling g++ directly you can also use some build toolkit like make
