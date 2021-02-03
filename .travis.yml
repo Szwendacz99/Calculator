@@ -1,4 +1,7 @@
+os: linux
 language: cpp
+
+sudo: required
 
 install:
   - sudo add-apt-repository --yes ppa:ubuntu-sdk-team/ppa
@@ -15,22 +18,13 @@ build:
   # install the necessary build tools when needed
   # before_script:
   #   - apt update && apt -y install make autoconf
+
+  script:
     - rm -r build
     - mkdir build
     - cd build
     - cmake ..
-  script:
-    - cd build
     - make
-  artifacts:
-    paths:
-      - build/calculator
-      - build/test
-      # depending on your build setup it's most likely a good idea to cache outputs to reduce the build time
-      # cache:
-      #   paths:
-      #     - "*.o"
-
 # run tests using the binary built before
 test:
   stage: test
