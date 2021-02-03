@@ -1,4 +1,5 @@
 # Calculator
+[![Build Status](https://travis-ci.org/Szwendacz99/Calculator.svg?branch=main)](https://travis-ci.org/Szwendacz99/Calculator)
 ### calculator with Qt GUI
 
 -----
