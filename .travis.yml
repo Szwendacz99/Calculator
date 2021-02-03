@@ -1,4 +1,5 @@
 image: gcc
+language: c++
 
 build:
   stage: build
