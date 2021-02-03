@@ -195,7 +195,7 @@ void MainWindow::prepareWindow() {
 
 }
 
-std::string math = "254*55646/2+(55+66*77)+2^cos(tan(-3.5))";
+std::string math = "9 /-4.5";
 
 void MainWindow::prepareCalculator() {
     calculator = new Calculator<double>();
@@ -266,7 +266,7 @@ void MainWindow::changeNumberType() {
         throw "No such type of number!";
     }
 
-    setResultText(liveResult);
+    setPrecisionAction();
     setResultText(staticResult);
     textInput->setFocus();
 }

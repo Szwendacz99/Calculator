@@ -7,7 +7,6 @@
 
 #include <string>
 #include <vector>
-#include <QPushButton>
 
 #define DEFAULT_PRECISION 6
 

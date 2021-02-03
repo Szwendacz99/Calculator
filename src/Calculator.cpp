@@ -19,7 +19,7 @@ number Calculator<number>::calculate(string arg) {
     if (arg.find("--") != string::npos)
         arg = replaceAll(arg, "--", "");
 
-    cout << "##### " << arg << endl;
+//    cout << "##### " << arg << endl;
     if (arg.find("sin(") != string::npos) {
         size_t positionStart = arg.find("sin(");
         size_t positionEnd = findClosingBracket(arg, positionStart+3);
@@ -122,7 +122,6 @@ string Calculator<number>::getResult(string arg) {
 
     // Qt framework messes up locales and because of that std::stod function works with
     // commas instead of dots, then this replacement is needed.
-    arg = replaceAll(arg,".", ",");
     std::stringstream stream;
     stream << setprecision(precision) << calculate(arg);
     return stream.str();

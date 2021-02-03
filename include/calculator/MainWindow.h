@@ -13,6 +13,7 @@
 #include <QMainWindow>
 #include <QRegExp>
 #include <QSlider>
+#include <QPushButton>
 
 
 /**
