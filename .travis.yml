@@ -2,11 +2,6 @@ os: linux
 dist: focal
 language: cpp
 
-compiler:
-  - gcc
-  - clang
-
-
 stages:
   - gccTest
   - clangTest
@@ -30,17 +25,17 @@ jobs:
       name: "gcc test stage"
       compiler:
         - gcc
-      script:
-      - ./compile.sh
-      - ./build/test
-    # run tests using the binary built before
+
     - stage: clangTest
       name: "clang test stage"
+      env:
+        - MATRIX_EVAL="CC=clang-10.0 && CXX=clang++-10.0"
       install:
         - sudo apt-get install -qq clang
       compiler:
         - clang
-      script:
-        - ./compile.sh
-        - ./build/test
+
+script:
+  - ./compile.sh
+  - ./build/test
 
