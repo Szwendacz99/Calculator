@@ -10,7 +10,7 @@ int main(int argv, char** args) {
     QApplication app(argv,args);
 
 
-    // this is for restoring using dot as decimal separator
+    // force using dot as decimal separator
     // because Qt messes this up
     setlocale(LC_NUMERIC, "C");
 
