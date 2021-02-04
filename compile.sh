@@ -15,11 +15,11 @@ then
 fi
 
 echo "Making dir "
-pwd
 mkdir $build_directory
+echo "entering $build_directory"
+cd "$build_directory" || return
+pwd
 echo "cmake configure..."
-pwd
-cmake $location -B $build_directory
+cmake ..
 echo "cmake compile..."
-pwd
-cmake --build $build_directory
+cmake --build .
