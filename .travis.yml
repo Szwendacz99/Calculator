@@ -1,12 +1,21 @@
 os: linux
 language: cpp
 
+sudo: required
+
 compiler:
   - clang
   - gcc
 
-install:
+stages:
+  - build
+  - test
+
+before_install:
   - sudo apt-get update -qq
+
+install:
+
   - sudo apt-get install -qq qt5-default
   - sudo apt-get install -qq cmake make
   - sudo apt-get install -qq build-essential
@@ -14,12 +23,16 @@ install:
   - sudo apt-get install -qq qtdeclarative5-dev
   - sudo apt-get install -qq qtbase5-dev
 
-sudo: required
+
 jobs:
   include:
-    - stage: "Build"
-      script: ./build.sh
+    - stage: build
+      name: "Build stage"
+      script:
+      - ./build.sh
     # run tests using the binary built before
-    - stage: "test"
-      script: ./build/test
+    - stage: test
+      name: "Test stage"
+      script:
+      - ./build/test
 
