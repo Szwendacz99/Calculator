@@ -1,7 +1,9 @@
 os: linux
 language: cpp
 
-sudo: required
+compiler:
+  - clang
+  - gcc
 
 install:
   - sudo apt-get update -qq
@@ -12,25 +14,12 @@ install:
   - sudo apt-get install -qq qtdeclarative5-dev
   - sudo apt-get install -qq qtbase5-dev
 
-compiler:
-  - clang
-  - gcc
+sudo: required
+jobs:
+  include:
+    - stage: "Build"
+      script: ./build.sh
+    # run tests using the binary built before
+    - stage: "test"
+      script: ./build/test
 
-build:
-  stage: build
-  # instead of calling g++ directly you can also use some build toolkit like make
-  # install the necessary build tools when needed
-  # before_script:
-  #   - apt update && apt -y install make autoconf
-
-  script:
-    - rm -r build
-    - mkdir build
-    - cd build
-    - cmake ..
-    - make
-# run tests using the binary built before
-test:
-  stage: test
-  script:
-    - ./build/test
