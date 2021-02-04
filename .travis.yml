@@ -8,7 +8,7 @@ compiler:
   - gcc
 
 stages:
-  - build
+  - compile
   - test
 
 before_install:
@@ -26,10 +26,10 @@ install:
 
 jobs:
   include:
-    - stage: build
-      name: "Build stage"
+    - stage: compile
+      name: "Compile stage"
       script:
-      - ./build.sh
+      - ./compile.sh
     # run tests using the binary built before
     - stage: test
       name: "Test stage"
