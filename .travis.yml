@@ -4,11 +4,12 @@ language: cpp
 
 compiler:
   - gcc
+  - clang
 
 
 stages:
-  - compile
-  - test
+  - gccTest
+  - clangTest
 
 before_install:
   - sudo apt-get update -qq
@@ -21,18 +22,25 @@ install:
   - sudo apt-get install -qq libgtest-dev
   - sudo apt-get install -qq qtdeclarative5-dev
   - sudo apt-get install -qq qtbase5-dev
-  - sudo apt-get install -qq clang
 
 
 jobs:
   include:
-    - stage: compile
-      name: "Compile stage"
+    - stage: gccTest
+      name: "gcc test stage"
+      compiler:
+        - gcc
       script:
       - ./compile.sh
-    # run tests using the binary built before
-    - stage: test
-      name: "Test stage"
-      script:
       - ./build/test
+    # run tests using the binary built before
+    - stage: clangTest
+      name: "clang test stage"
+      install:
+        - sudo apt-get install -qq clang
+      compiler:
+        - clang
+      script:
+        - ./compile.sh
+        - ./build/test
 
