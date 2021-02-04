@@ -8,9 +8,6 @@ stages:
 
 before_install:
   - sudo apt-get update -qq
-
-install:
-
   - sudo apt-get install -qq qt5-default
   - sudo apt-get install -qq cmake make
   - sudo apt-get install -qq build-essential
@@ -32,6 +29,7 @@ jobs:
         - MATRIX_EVAL="CC=clang-10.0 && CXX=clang++-10.0"
       install:
         - sudo apt-get install -qq clang
+        - eval "${MATRIX_EVAL}"
       compiler:
         - clang
 
