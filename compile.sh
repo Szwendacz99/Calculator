@@ -36,6 +36,6 @@ echo "entering $build_directory"
 cd "$build_directory" || return
 pwd
 echo "cmake configure..."
-cmake ..
+cmake .. -D CMAKE_CXX_COMPILER=$compiler
 echo "cmake compile..."
 cmake --build .

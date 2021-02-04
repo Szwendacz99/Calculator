@@ -22,6 +22,10 @@ jobs:
       name: "gcc test stage"
       compiler:
         - gcc
+      script:
+        - ./compile.sh
+        - ./build/test
+
 
     - stage: clangTest
       name: "clang test stage"
@@ -32,8 +36,9 @@ jobs:
         - eval "${MATRIX_EVAL}"
       compiler:
         - clang
+      script:
+        - ./compile.sh clang
+        - ./build/test
 
-script:
-  - ./compile.sh
-  - ./build/test
+
 
