@@ -47,7 +47,7 @@ public:
      * @tparam number
      * @param precision precision of calculations and displayed result. It applies only to float/double type of calculator
      */
-    void setPrecision(int precision);
+    void setPrecision(int precision) override;
     ~Calculator();
 
 private:
