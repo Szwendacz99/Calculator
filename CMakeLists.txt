@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.15)
+cmake_minimum_required(VERSION 3.14)
 project(calculator)
 
 set(CMAKE_CXX_STANDARD 11)
@@ -14,14 +14,10 @@ find_package(Qt5Widgets REQUIRED)
 find_package(Qt5Quick REQUIRED)
 
 add_executable(calculator src/Main.cpp
-        src/Calculator.cpp src/MainWindow.cpp)
+        src/Calculator.cpp src/MainWindow.cpp )
 
-add_executable(test tests/test.cpp
-                tests/test_calculating.cpp src/Calculator.cpp)
-
-target_link_libraries(test gtest gtest_main)
-
-find_package(Qt5 COMPONENTS Widgets REQUIRED)
+add_executable(test src/Calculator.cpp tests/test.cpp
+                tests/test_calculating.cpp )
 
 target_link_libraries(calculator Qt5::Core Qt5::Widgets Qt5::Quick)
-target_link_libraries(test Qt5::Core pthread)
+target_link_libraries(test gtest gtest_main Qt5::Core pthread)

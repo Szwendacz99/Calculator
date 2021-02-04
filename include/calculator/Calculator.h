@@ -90,9 +90,5 @@ private:
  * templates for possible variable types of calculator
  * to be precompiled and be able to switched to, in runtime.
  */
-template class Calculator<long>;
-template class Calculator<float>;
-template class Calculator<int>;
-template class Calculator<double>;
 
 #endif //CALCULATOR_CALCULATOR_H

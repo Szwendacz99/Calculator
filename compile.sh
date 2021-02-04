@@ -1,18 +1,17 @@
 #!/bin/bash
 
-# To compile with clang instead of gcc run with parameter "clang"
-compiler="gcc"
-if [ $# -eq 1 ]
+# to change compiler specify two parameters when starting script:
+compilercpp="g++"
+compilerc="gcc"
+if [ $# -eq 2 ]
 then
-  if [ "$1" == "clang" ]
-  then
-    compiler="clang++"
-  fi
+    compilercpp=$1
+    compilerc=$2
 fi
 
- echo "Compiler set to $compiler"
+echo "Compiler set to $compilercpp"
 
-location=`pwd`
+location=$(pwd)
 echo "Current location: ${location}"
 echo "Files here:"
 ls
@@ -20,7 +19,8 @@ echo  "Cmake version:"
 cmake --version
 
 echo  "Compiler version:"
-$compiler --version
+$compilercpp --version
+$compilerc --version
 
 echo "Checking for previous build and cleaning..."
 build_directory="${location}/build"
@@ -32,10 +32,7 @@ fi
 
 echo "Making dir "
 mkdir "$build_directory"
-echo "entering $build_directory"
-cd "$build_directory" || return
-pwd
 echo "cmake configure..."
-cmake .. -D CMAKE_CXX_COMPILER=$compiler
+cmake -D CMAKE_CXX_COMPILER="$compilercpp" -D CMAKE_C_COMPILER="$compilerc" -B "$build_directory" -S "$location"
 echo "cmake compile..."
-cmake --build .
+cmake --build "$build_directory"

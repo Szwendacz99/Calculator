@@ -137,3 +137,8 @@ void Calculator<number>::setPrecision(int precision) {
     this->precision = precision;
 }
 
+template class Calculator<long>;
+template class Calculator<float>;
+template class Calculator<int>;
+template class Calculator<double>;
+
