@@ -2,11 +2,9 @@ os: linux
 dist: focal
 language: cpp
 
-sudo: required
-
 compiler:
-  - clang
   - gcc
+
 
 stages:
   - compile
