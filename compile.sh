@@ -9,8 +9,6 @@ then
     compilerc=$2
 fi
 
-echo "Compiler set to $compilercpp"
-
 location=$(pwd)
 echo "Current location: ${location}"
 echo "Files here:"

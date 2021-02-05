@@ -32,7 +32,6 @@ void MainWindow::prepareWindow() {
 
     precisionSlider->setRange(0,308);
     precisionSlider->setValue(20);
-    precisionSlider->setStyleSheet("padding-left:50%;");
     
 
     std::cout << "Preparing widgets" << std::endl;
