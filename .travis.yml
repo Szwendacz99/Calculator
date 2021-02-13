@@ -13,18 +13,23 @@ before_install:
   - sudo apt-get install -qq libgtest-dev
   - sudo apt-get install -qq qtdeclarative5-dev
   - sudo apt-get install -qq qtbase5-dev
-  - sudo apt-get install -qq clang
+  - sudo apt-get install -qq clang gcc
+  - sudo apt-get install -qq gcovr lcov
 
 jobs:
   include:
     - stage: mainTest
       name: "gcc and clang test stage"
       script:
-        - ./compile.sh g++ gcc
+        - ./compile.sh --compiler clang clang++ --debug
         - ./build/test
-        - ./compile.sh clang++ clang
+        - ./compile.sh --compiler gcc g++ --debug --coverage
         - ./build/test
 
-
+        - lcov --version
+        - lcov --directory . --capture --output-file coverage.info
+        - lcov --remove coverage.info '/usr/*' --output-file coverage.info
+        - lcov --list coverage.info
+        - bash <(curl -s https://codecov.io/bash)
 
 
