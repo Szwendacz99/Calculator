@@ -26,6 +26,9 @@ jobs:
         - ./compile.sh --compiler gcc g++ --debug --coverage --cmake -t calculator -t test
         - ./build/test
 
+        - ./compile.sh --compiler gcc g++ --debug --coverage --cmake -t test
+        - ./build/test
+
         - lcov --version
         - lcov --directory . --capture --output-file coverage.info
         - lcov --remove coverage.info '/usr/*' --output-file coverage.info
