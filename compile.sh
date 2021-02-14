@@ -3,16 +3,18 @@
 # to change compiler specify two parameters when starting script after --compiler parameter
 # eg. ./compile --compiler gcc g++:
 
-# to specify cmake flags add them after --cmake parameter, they will be listed until end of all arguments
-# eg. "--cmake -flagOne --flagTwo"
+# IMPORTANT --cmake and what comes next must be the end of arguments of this script
+# to specify cmake build arguments add them after --cmake parameter, they will be listed until end of all arguments
+# eg. "--cmake -argumentOne --argumentTwo"
 
 # for coverage add --coverage parameter
 # for debug build add --debug parameter
 
-#default arguments to be overwritten when using parameters
+#default arguments to be overwritten or extended(cmake_flags) when using parameters
 compilerc="gcc"
 compilercpp="g++"
-cmake_args="-Wall"
+cmake_flags="-Wall"
+cmake_build_args=""
 cmake_build_type="Release"
 
 while [ $1 ]; do
@@ -27,20 +29,21 @@ while [ $1 ]; do
       cmake_build_type="Debug"
     fi
     if [ $1 == "--coverage"  ]; then
-      cmake_args="$cmake_args -g -O0 -coverage"
+      cmake_flags="$cmake_flags -g -O0 -coverage"
     fi
     if [ $1 == "--cmake" ]
     then
       shift
       while [ $1 ]; do
-          cmake_args="$cmake_args $1"
+          cmake_build_args="$cmake_build_args $1"
           shift
       done
     fi
     shift
 done
 echo ""
-echo "Cmake arguments: $cmake_args"
+echo "Cmake build arguments: $cmake_build_args"
+echo "Cmake flags: $cmake_flags"
 echo "Cmake build type: $cmake_build_type"
 echo ""
 location=$(pwd)
@@ -67,6 +70,7 @@ fi
 echo "Making dir "
 mkdir "$build_directory"
 echo "cmake configure..."
-cmake -D CMAKE_BUILD_TYPE="$cmake_build_type" -D CMAKE_CXX_COMPILER="$compilercpp" -D CMAKE_C_COMPILER="$compilerc" -B "$build_directory" -S "$location" -D CMAKE_CXX_FLAGS="$cmake_args"
+cmake -D CMAKE_BUILD_TYPE="$cmake_build_type" -D CMAKE_CXX_COMPILER="$compilercpp" -D CMAKE_C_COMPILER="$compilerc" -B "$build_directory" -S "$location" -D CMAKE_CXX_FLAGS="$cmake_flags"
 echo "cmake compile..."
-cmake --build "$build_directory"
+echo "--build $build_directory $cmake_build_args" | xargs cmake
+#cmake --build "$build_directory" "$cmake_build_args"

@@ -1,6 +1,5 @@
 #include <iostream>
-#include <MainWindow.h>
-#include <clocale>
+#include <Main.h>
 
 using namespace std;
 
@@ -8,17 +7,7 @@ int main(int argv, char** args) {
     cout << "Starting!" << endl;
 
     QApplication app(argv,args);
-
-
-    // force using dot as decimal separator
-    // because Qt messes this up
-    setlocale(LC_NUMERIC, "C");
-
-    QFont font("Arial");
-    font.setStyleHint(QFont::Monospace);
-    QApplication::setFont(font);
-    MainWindow window;
-    window.show();
+    startWindow();
 
     return QApplication::exec();
 }

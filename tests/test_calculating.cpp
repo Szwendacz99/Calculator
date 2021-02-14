@@ -22,10 +22,10 @@ TEST(Calculations,integerTest) {
 TEST(Calculations,longTest) {
     Calculator<long> calc;
 
-    ASSERT_EQ( "0",calc.getResult("1/2"));
+    ASSERT_EQ( "0",calc.getResult("--1/2"));
     ASSERT_EQ( "10",calc.getResult("1*2+6*6^-2+8"));
     ASSERT_EQ( "246912",calc.getResult("2*123456"));
-    ASSERT_EQ( "6",calc.getResult("3.9+3.9"));
+    ASSERT_EQ( "0",calc.getResult("3.9-3.9"));
     ASSERT_EQ( "2469135780",calc.getResult("2*1234567890"));
     ASSERT_GT( "0",calc.getResult("53540000*901234567892"));
 
@@ -43,11 +43,11 @@ TEST(Calculations,floatTest) {
 }
 
 TEST(Calculations,doubleTest) {
-    Calculator<float> calc;
+    Calculator<double> calc;
 
     calc.setPrecision(10);
     ASSERT_EQ( "0.5",calc.getResult("1/2"));
-    ASSERT_EQ( "10.16666698",calc.getResult("1*2+6*6^-2+8"));
+    ASSERT_EQ( "10.16666667",calc.getResult("1*2+6*6^-2+8"));
     ASSERT_EQ( "246912",calc.getResult("2*123456"));
     calc.setPrecision(3);
     ASSERT_EQ( "0.333",calc.getResult("1/3"));
@@ -58,6 +58,17 @@ TEST(Calculations,doubleTest) {
     calc.setPrecision(200);
     ASSERT_EQ( "8.2718061255302767487140869206996285356581211090087890625e-25",calc.getResult("1/2^80"));
 
-    ASSERT_EQ( "-1.265625",calc.getResult("((( 1 /2/4+2^-6*7 *cos(0)+ 9 /-4.5))+2/4)"));
+    ASSERT_EQ( "-1.2721299999999999830180286153336055576801300048828125",calc.getResult("((( 1 /2/4+2^-6*7 *cos(0)-tan(-5)*sin(0.1234567890)+ 9 /-4.5))+2/4)"));
 
+
+
+}
+
+TEST(Calculations,otherTests) {
+    Calculator<double> calc;
+    ASSERT_ANY_THROW(calc.getResult("2+(5"));
+    ASSERT_ANY_THROW(calc.getResult("2+sin(5"));
+    ASSERT_ANY_THROW(calc.getResult("2+cos(5"));
+    ASSERT_ANY_THROW(calc.getResult("2+tan(5"));
+    ASSERT_ANY_THROW(calc.getResult("dfhdfh"));
 }
