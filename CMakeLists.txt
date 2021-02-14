@@ -30,7 +30,7 @@ add_executable(calculator src/Main.cpp
         src/Calculator.cpp src/MainWindow.cpp )
 
 add_executable(test src/Calculator.cpp src/MainWindow.cpp tests/test.cpp
-                tests/test_calculating.cpp tests/test_mainwindow.cpp)
+                tests/test_calculating.cpp)
 
 target_link_libraries(calculator Qt5::Core Qt5::Widgets )
 target_link_libraries(test gtest gtest_main Qt5::Core Qt5::Widgets pthread )

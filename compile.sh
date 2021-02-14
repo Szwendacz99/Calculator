@@ -34,6 +34,7 @@ while [ $1 ]; do
     if [ $1 == "--cmake" ]
     then
       shift
+      cmake_build_args=""
       while [ $1 ]; do
           cmake_build_args="$cmake_build_args $1"
           shift
