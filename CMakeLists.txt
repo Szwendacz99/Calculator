@@ -29,7 +29,7 @@ find_package(Qt5Quick REQUIRED)
 add_executable(calculator src/Main.cpp
         src/Calculator.cpp src/MainWindow.cpp )
 
-add_executable(test src/Calculator.cpp src/MainWindow.cpp tests/test.cpp
+add_executable(test src/Calculator.cpp tests/test.cpp
                 tests/test_calculating.cpp)
 
 target_link_libraries(calculator Qt5::Core Qt5::Widgets )
