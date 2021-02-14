@@ -194,16 +194,8 @@ void MainWindow::prepareWindow() {
 
 }
 
-std::string math = "9 /-4.5";
-
 void MainWindow::prepareCalculator() {
     calculator = new Calculator<double>();
-
-    //temporary START
-    textInput->setText(math.c_str());
-    setResultText(staticResult);
-    setResultText(liveResult);
-    //temporary END
 
     setPrecisionAction();
 }

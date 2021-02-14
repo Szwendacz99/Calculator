@@ -21,9 +21,9 @@ jobs:
     - stage: mainTest
       name: "gcc and clang test stage"
       script:
-        - ./compile.sh --compiler clang clang++ --debug
+        - ./compile.sh --compiler clang clang++ --debug --cmake -t calculator -t test
         - ./build/test
-        - ./compile.sh --compiler gcc g++ --debug --coverage
+        - ./compile.sh --compiler gcc g++ --debug --coverage --cmake -t calculator -t test
         - ./build/test
 
         - lcov --version

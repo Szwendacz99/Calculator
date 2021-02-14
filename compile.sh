@@ -14,7 +14,7 @@
 compilerc="gcc"
 compilercpp="g++"
 cmake_flags="-Wall"
-cmake_build_args=""
+cmake_build_args="-t calculator"
 cmake_build_type="Release"
 
 while [ $1 ]; do
